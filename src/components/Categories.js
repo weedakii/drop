@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   ScrollView,
@@ -11,6 +11,9 @@ import {
 
 const Categories = ({ categories, setcategories, setmeals, meals }) => {
   const [activeCategory, setActiveCategory] = useState(0);
+
+  const scrollRef = useRef();
+  const scrollToEnd = () => scrollRef.current.scrollToEnd({ animated: false });
 
   const handleCategoryPress = (cat) => {
     setActiveCategory(cat.id);
@@ -28,7 +31,14 @@ const Categories = ({ categories, setcategories, setmeals, meals }) => {
   };
 
   return (
-    <ScrollView horizontal contentContainerStyle={styles.container}>
+    <ScrollView
+      horizontal
+      directionalLockEnabled={true}
+      ref={scrollRef}
+      showsHorizontalScrollIndicator={false}
+      onContentSizeChange={scrollToEnd}
+      contentContainerStyle={styles.container}
+    >
       <TouchableOpacity
         style={[
           styles.button,

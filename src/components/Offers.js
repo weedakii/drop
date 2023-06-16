@@ -11,7 +11,7 @@ const Offers = ({ offers }) => {
         className="w-full h-56 rounded-md"
       />
       <View className="flex-col flex-1 mt-1">
-        <Text className="text-xl font-extrabold whitespace-pre-wrap w-full ">
+        <Text className="text-xl text-left font-extrabold whitespace-pre-wrap w-full ">
           {item.name}
         </Text>
         <Text className="text-orange-600 font-bold text-lg self-end mt-2">

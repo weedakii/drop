@@ -16,7 +16,9 @@ const Meals = ({ meals }) => {
         style={styles.img}
         className="scale-125 rounded-full"
       />
-      <Text className="text-slate-400 mb-1 text-base -mt-1">{item.cat}</Text>
+      <Text className="text-slate-400 text-left mb-1 text-base -mt-1">
+        {item.cat}
+      </Text>
       <Text style={styles.name}>{item.name}</Text>
       <Text className="text-slate-600 font-bold text-lg">{item.price} EGP</Text>
     </View>

@@ -20,19 +20,19 @@ const home = () => {
     });
   }, []);
   return (
-    <SafeAreaView className="flex-1 flex-row-reverse bg-white">
+    <SafeAreaView className="flex-1 flex-row bg-white">
       <ScrollView nestedScrollEnabled={true} bg={"muted.50"} flex={1}>
         <View className="flex-1 flex-col pt-10 px-5">
           <View>
-            <View className="flex-row-reverse mt-2">
+            <View className="flex-row mt-2">
               <Text className="text-2xl">مرحبا بك في </Text>
               <Text className="text-orange-700 text-2xl font-bold">دروب</Text>
             </View>
             <Text className="text-xl text-slate-400 mt-2">
               مستني ايه اطلب دلوقتي
             </Text>
-            {/* <View className="flex-row-reverse mt-5">
-              <View className="flex-1 flex-row-reverse gap-x-2 items-center p-2 bg-slate-200 rounded">
+            {/* <View className="flex-row mt-5">
+              <View className="flex-1 flex-row gap-x-2 items-center p-2 bg-slate-200 rounded">
                 <FontAwesome name="search" size={22} color="#444" />
                 <TextInput
                   className="text-lg flex-1"

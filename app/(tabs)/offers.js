@@ -17,11 +17,11 @@ const offers = () => {
     });
   }, []);
   return (
-    <SafeAreaView className="flex-1 flex-row-reverse bg-white">
+    <SafeAreaView className="flex-1 flex-row bg-white">
       <ScrollView nestedScrollEnabled={true} bg={"muted.50"} flex={1}>
         <View className="flex-1 flex-col pt-10 px-5">
           <View>
-            <View className="flex-row-reverse mt-2">
+            <View className="flex-row mt-2">
               <Text className="text-2xl">أجدد عروض </Text>
               <Text className="text-orange-700 text-2xl font-bold">دروب</Text>
             </View>
