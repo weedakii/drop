@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "scheme": "myapp",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "Drop",
+    "slug": "Drop",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "privacy": "public",
+    "userInterfaceStyle": "light",
+    "description": "An appliction for Drop resturant",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    }
+  }
+}
