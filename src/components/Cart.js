@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useState } from 'react';
 import {
 	FlatList,
@@ -53,11 +55,7 @@ const Meals = ({ meals }) => {
 				keyExtractor={(item) => item.id.toString()}
 				numColumns={2}
 			/>
-			<MealModal
-				modalVisible={modalVisible}
-				closeModal={closeModal}
-				selectedMeal={selectedMeal}
-			/>
+			<MealModal modalVisible={modalVisible} selectedMeal={selectedMeal} closeModal={closeModal} />
 		</ScrollView>
 	);
 };
