@@ -7,7 +7,7 @@ import {
 	ScrollView,
 	TouchableOpacity,
 } from 'react-native';
-import MealModal from './MealModal';
+import MealModal from '../Modals/MealModal';
 
 const Meals = ({ meals }) => {
 	const [selectedMeal, setSelectedMeal] = useState(null); // State for selected meal

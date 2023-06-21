@@ -6,22 +6,22 @@ import {
 	StyleSheet,
 	Modal,
 	TouchableOpacity,
+	ToastAndroid,
 } from 'react-native';
 
 const MealModal = ({ selectedMeal, modalVisible, closeModal }) => {
+	function showToast() {
+		ToastAndroid.show('تم إضافة المنتج في طلباتك', ToastAndroid.SHORT);
+	}
+
 	return (
-		<Modal
-			visible={modalVisible}
-			animationType='fade'
-			transparent={true}
-		>
+		<Modal visible={modalVisible} animationType='fade' transparent={true}>
 			<TouchableOpacity
 				activeOpacity={0.7}
 				style={{
 					backgroundColor: 'rgba(0,0,0,0.2)',
 					paddingBottom: 200,
 					flex: 1,
-					
 				}}
 				onPress={closeModal}
 			></TouchableOpacity>
@@ -49,7 +49,10 @@ const MealModal = ({ selectedMeal, modalVisible, closeModal }) => {
 							title='Add To Cart'
 							activeOpacity={0.8}
 							style={[styles.customBtn, styles.addBtn]}
-							onPress={closeModal}
+							onPress={() => {
+								closeModal();
+								showToast();
+							}}
 						>
 							<Text
 								style={{

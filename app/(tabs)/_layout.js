@@ -57,7 +57,6 @@ export default () => {
 								onPress={() => {
 									navigation.goBack();
 								}}
-								
 							/>
 						</TouchableOpacity>
 					),

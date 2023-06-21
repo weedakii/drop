@@ -1,22 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View, FlatList, Text } from 'react-native';
 import CartCard from '../../src/components/CartCard';
 import CheckoutBar from '../../src/components/CheckoutBar';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
+import CheckoutModal from '../../src/Modals/CheckoutModal';
 
-const meals = [];
+const info = [];
 const cart = () => {
+	const [selectedMeal, setSelectedMeal] = useState(); // State for selected meal
+	const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
 	const navigation = useNavigation();
+
+
+	useEffect(()=>{
+		setSelectedMeal(info)
+	},[])
+
+	const handleMealSelection = (info) => {
+		setSelectedMeal(info);
+		setModalVisible(true);
+	};
+
+	const closeModal = () => {
+		setSelectedMeal(null);
+		setModalVisible(false);
+	};
 	return (
 		<View style={styles.container}>
 			{/* <Header /> */}
 			{/* {meals.map((meal)=><View key={()=>meal.id.toString()}><Text>{meal.title}</Text></View>)} */}
-			{meals.length ? (
+			{info.length ? (
 				<>
 					<FlatList
-						data={meals}
+						data={info}
 						contentContainerStyle={{ paddingBottom: 105 }}
 						renderItem={({ item }) => <CartCard item={item} />}
 						keyExtractor={(item) => item.id.toString()}
@@ -34,8 +52,18 @@ const cart = () => {
 							style={{ textAlign: 'center' }}
 						/>
 					</TouchableOpacity>
+					<View onPress={() => navigation.navigate('checkout')}>
+						<Text onPress={handleMealSelection}>
+							alskdjfadslkf
+						</Text>
+					</View>
 				</View>
 			)}
+			<CheckoutModal
+				modalVisible={modalVisible}
+				closeModal={closeModal}
+				selectedMeal={selectedMeal}
+			/>
 		</View>
 	);
 };

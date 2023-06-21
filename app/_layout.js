@@ -6,14 +6,14 @@ const Layout = () => {
   I18nManager.forceRTL(true);
 
   return (
-    <Stack>
-      <Stack.Screen
-        name="(tabs)"
-        options={{
-          headerShown: false,
-        }}
-      />
-    </Stack>
+		<Stack>
+			<Stack.Screen
+				name='(tabs)'
+				options={{
+					headerShown: false,
+				}}
+			/>
+		</Stack>
   );
 };
 
