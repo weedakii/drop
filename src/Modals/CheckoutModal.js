@@ -1,6 +1,4 @@
-import { FontAwesome } from '@expo/vector-icons';
-import { useState } from 'react';
-
+import { useEffect, useRef, useState } from 'react';
 import {
 	View,
 	Image,
@@ -10,6 +8,7 @@ import {
 	Modal,
 	TouchableOpacity,
 	ToastAndroid,
+	Animated,
 } from 'react-native';
 import { useKeyboard } from 'react-native-hooks';
 
@@ -17,12 +16,27 @@ const CheckoutModal = ({ selectedMeal, modalVisible, closeModal }) => {
 	function showToast() {
 		ToastAndroid.show('تم ارسال طلبك الى المطعم', ToastAndroid.SHORT);
 	}
+	const keyboard = useKeyboard();
+	const imgScaleY = useRef(new Animated.Value(0)).current;
+	useEffect(() => {
+		if (keyboard.isKeyboardShow) {
+			Animated.timing(imgScaleY, {
+				toValue: -300,
+				duration: 1000,
+				useNativeDriver: true,
+			}).start();
+		} else {
+			Animated.timing(imgScaleY, {
+				toValue: 0,
+				duration: 1000,
+				useNativeDriver: true,
+			}).start();
+		}
+	}, [keyboard.isKeyboardShow]);
 
 	const [fullName, setFullName] = useState('');
 	const [address, setAddress] = useState('');
 	const [phone, setPhone] = useState('');
-
-	const useKeyboard = useKeyboard();
 
 	const handleFormSubmit = () => {
 		// Handle form submission here
@@ -36,35 +50,47 @@ const CheckoutModal = ({ selectedMeal, modalVisible, closeModal }) => {
 			<View style={styles.modalContainer}>
 				{selectedMeal && (
 					<View style={styles.modalBlock}>
-						<View className={`flex-1 justify-center  p-4`}>
-							{!keyboard.visible && (
+						<View className='flex-1 justify-center p-2'>
+							<Animated.View
+								style={{
+									transform: [{ translateY: imgScaleY }],
+									height: 200
+								}}
+							>
 								<Image
 									source={require('../../assets/logo.png')}
-									style={{ height: 300, alignSelf: 'center' }}
+									style={{
+										height: '100%',
+										alignSelf: 'center',
+									}}
 									resizeMode='contain'
 								/>
-							)}
-							<Text
-								className={`justify-center py-4 text-5xl font-bold text-white text-center`}
-							>
+							</Animated.View>
+							<Text className='justify-center py-4 text-5xl font-bold text-white text-center'>
 								البيانات
 							</Text>
 							<TextInput
-								className={`h-10 border bg-white shadow-xl border-gray-300 rounded mb-4 p-2`}
+								cursorColor='#edaa4b'
+								placeholderTextColor='#edaa4b'
+								className='h-10 border bg-white shadow-xl border-gray-300 text-right rounded mb-4 p-2'
 								placeholder='الاسم بالكامل'
 								value={fullName}
 								onChangeText={(text) => setFullName(text)}
 							/>
 
 							<TextInput
-								className={`h-10 border bg-white border-gray-300 rounded mb-4 p-2`}
+								cursorColor='#edaa4b'
+								placeholderTextColor='#edaa4b'
+								className='h-10 border bg-white border-gray-300 text-right rounded mb-4 p-2'
 								placeholder='العنوان'
 								value={address}
 								onChangeText={(text) => setAddress(text)}
 							/>
 
 							<TextInput
-								className={`h-10 border bg-white border-gray-300 text-right rounded mb-4 p-2`}
+								cursorColor='#edaa4b'
+								placeholderTextColor='#edaa4b'
+								className='h-10 border bg-white border-gray-300 text-right rounded mb-4 p-2'
 								placeholder='الهاتف'
 								keyboardType='phone-pad'
 								value={phone}

@@ -54,7 +54,7 @@ const cart = () => {
 					</TouchableOpacity>
 					<View onPress={() => navigation.navigate('checkout')}>
 						<Text onPress={handleMealSelection}>
-							alskdjfadslkf
+							OPEN ME
 						</Text>
 					</View>
 				</View>
