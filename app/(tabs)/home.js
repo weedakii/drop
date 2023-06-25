@@ -7,7 +7,12 @@ import OfferSlider from '../../src/components/OfferSlider';
 import FixedBtn from '../../src/components/FixedBtn';
 import axios from 'axios';
 import Header from '../../src/components/Header';
-import { CartTable, dropCartTable } from '../../services/CartsDB';
+import {
+	cartTable,
+	dropCartTable,
+	orderTable,
+	dropOrderTable,
+} from '../../services/CartsDB';
 
 const home = () => {
 	const [categories, setcategories] = useState([]);
@@ -20,7 +25,8 @@ const home = () => {
 		axios.get('https://back.amadagency.net/api/v1/meal').then((res) => {
 			setmeals(res.data.data);
 		});
-		CartTable();
+		cartTable();
+		orderTable();
 		// dropCartTable()
 	}, []);
 	return (

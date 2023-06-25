@@ -1,6 +1,6 @@
 import { db } from '../database';
 
-export const CartTable = () => {
+export const cartTable = () => {
 	try {
 		db.transaction((tx) => {
 			tx.executeSql(
@@ -15,6 +15,44 @@ export const CartTable = () => {
 			);
 		});
 	} catch (error) {
+		return { error, msg: 'حدث خطأ', success: false };
+	}
+};
+export const orderTable = () => {
+	try {
+		db.transaction((tx) => {
+			tx.executeSql(
+				'CREATE TABLE IF NOT EXISTS `Order` (id INTEGTEER PRIMARY KEY, orderID Text);',
+				[],
+				(_, result) => {
+					console.log('Order table created successfully');
+				},
+				(_, error) => {
+					console.log('Error creating Order table:', error);
+				}
+			);
+		});
+	} catch (error) {
+		return { error, msg: 'حدث خطأ', success: false };
+	}
+};
+
+export const dropOrderTable = () => {
+	try {
+		db.transaction((tx) => {
+			tx.executeSql(
+				'DROP TABLE IF EXISTS Order;',
+				[],
+				(_, result) => {
+					console.log('Order table dropped successfully');
+				},
+				(_, error) => {
+					console.log('Error dropping Order table:', error);
+				}
+			);
+		});
+	} catch (error) {
+		console.log(error);
 		return { error, msg: 'حدث خطأ', success: false };
 	}
 };
@@ -130,4 +168,62 @@ export const editQtyMeal = async (mealID, qty) => {
 			console.log('Transaction error', error);
 		}
 	);
+};
+export const resetCart = async () => {
+	db.transaction(
+		(tx) => {
+			tx.executeSql(
+				'DELETE FROM `CartMeals`;',
+				[],
+				(_, deleteResult) => {
+					console.log('Cart reset', deleteResult);
+				},
+				(_, deleteError) => {
+					console.log('Failed to reset cart', deleteError);
+				}
+			);
+		},
+		(error) => {
+			console.log('Transaction error', error);
+		}
+	);
+};
+export const addNewOrder = async (id) => {
+	try {
+		db.transaction((tx) => {
+			tx.executeSql(
+				'INSERT INTO `Order` (id) VALUES (?);',
+				[id],
+				(_, result) => {
+					console.log('Added is DONE', result);
+				},
+				(_, error) => {
+					console.log('Added is falsy', error);
+				}
+			);
+		});
+	} catch (err) {
+		console.log(err);
+	}
+};
+export const getAllOrders = () => {
+	return new Promise((resolve, reject) => {
+		db.transaction((tx) => {
+			tx.executeSql(
+				'SELECT * FROM `Order`;',
+				[],
+				(_, result) => {
+					const orders = [];
+					for (let i = 0; i < result.rows.length; i++) {
+						const meal = result.rows.item(i);
+						orders.push(meal);
+					}
+					resolve(orders);
+				},
+				(_, error) => {
+					reject(error);
+				}
+			);
+		});
+	});
 };

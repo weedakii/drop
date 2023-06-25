@@ -14,6 +14,7 @@ import {
 import { useKeyboard } from 'react-native-hooks';
 import { CartContext } from '../../context';
 import { FontAwesome } from '@expo/vector-icons';
+import { addNewOrder, getAllOrders, resetCart } from '../../services/CartsDB';
 
 const CheckoutModal = ({ modalVisible, closeModal }) => {
 	const { meals, setMeals, checkoutInfo } = useContext(CartContext);
@@ -63,10 +64,12 @@ const CheckoutModal = ({ modalVisible, closeModal }) => {
 				phone,
 				totalPrice: checkoutInfo,
 			})
-			.then(() => {
+			.then((x) => {
+				console.log('data', x.data);
 				closeModal();
-				showToast("تم ارسال طلبكم بنجاح ✔")
-				setMeals([])
+				showToast('تم ارسال طلبكم بنجاح ✔');
+				setMeals([]);
+				resetCart();
 			})
 			.catch((err) => {
 				console.log(err);
@@ -77,7 +80,13 @@ const CheckoutModal = ({ modalVisible, closeModal }) => {
 		<Modal visible={modalVisible} animationType='fade' transparent={true}>
 			<View style={styles.modalContainer}>
 				<View style={styles.modalBlock}>
-					<TouchableOpacity activeOpacity={.6} onPress={closeModal}  className="absolute top-3 left-4 "><FontAwesome name="close" size={50} color='white' /></TouchableOpacity>
+					<TouchableOpacity
+						activeOpacity={0.6}
+						onPress={closeModal}
+						className='absolute top-3 left-4 '
+					>
+						<FontAwesome name='close' size={50} color='white' />
+					</TouchableOpacity>
 					<View className='flex-1 justify-center p-2'>
 						<Animated.View
 							style={{
