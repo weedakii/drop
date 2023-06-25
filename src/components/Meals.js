@@ -12,7 +12,7 @@ import MealModal from '../Modals/MealModal';
 const Meals = ({ meals }) => {
 	const [selectedMeal, setSelectedMeal] = useState(null); // State for selected meal
 	const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
-
+	
 	const renderMeal = ({ item }) => (
 		<TouchableOpacity
 			style={styles.container}

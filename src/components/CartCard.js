@@ -1,19 +1,35 @@
+import { useContext, useEffect, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
-import { useEffect, useState } from 'react';
 import { Image, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { CartContext } from '../../context';
 
 function CartCard({ item }) {
-	const [count, setCount] = useState(0);
+	const [count, setCount] = useState(1);
+
+	const { editQty } = useContext(CartContext);
 
 	useEffect(() => {
-		setCount(0);
+		setCount(item?.qty);
 	}, []);
+
+	useEffect(() => {
+		editQty(item.id, count);
+	}, [count]);
+
+	function addQty() {
+		setCount((c) => c + 1);
+	}
+	function decreaseQty() {
+		setCount((c) => c - 1);
+	}
 
 	return (
 		<View style={styles.mealContainer}>
 			{/* Image side */}
 			<Image
-				source={item.src}
+				source={{
+					uri: `https://back.amadagency.net/storage/${item?.image}`,
+				}}
 				alt='image not found'
 				style={{
 					height: '100%',
@@ -32,10 +48,10 @@ function CartCard({ item }) {
 						fontSize: 20,
 					}}
 				>
-					{item.title}
+					{item?.name}
 				</Text>
 				<Text style={{ textAlign: 'left', color: '#777' }}>
-					{item.desc}
+					{item?.disc}
 				</Text>
 				<Text
 					style={{
@@ -45,7 +61,7 @@ function CartCard({ item }) {
 						color: '#edaa4b',
 					}}
 				>
-					{item.price} <Text>EGP</Text>
+					{item?.price * count} <Text>EGP</Text>
 				</Text>
 			</View>
 
@@ -54,7 +70,7 @@ function CartCard({ item }) {
 				<View style={styles.btnGroup}>
 					<TouchableOpacity
 						style={[styles.btnRight, styles.btn]}
-						onPress={() => setCount((c) => c - 1)}
+						onPress={decreaseQty}
 					>
 						<FontAwesome name='minus' color='white' />
 					</TouchableOpacity>
@@ -63,7 +79,7 @@ function CartCard({ item }) {
 					</Text>
 					<TouchableOpacity
 						style={[styles.btnLeft, styles.btn]}
-						onPress={() => setCount((c) => c + 1)}
+						onPress={addQty}
 					>
 						<FontAwesome name='plus' color='white' />
 					</TouchableOpacity>
@@ -93,7 +109,7 @@ const styles = StyleSheet.create({
 	rightContent: {
 		flexDirection: 'row',
 		alignItems: 'center',
-        paddingRight: 10,
+		paddingRight: 10,
 	},
 	btnGroup: {
 		flexDirection: 'row',

@@ -8,11 +8,19 @@ import {
 	TouchableOpacity,
 	ToastAndroid,
 } from 'react-native';
+import { addMealToCart } from '../../services/CartsDB';
 
 const MealModal = ({ selectedMeal, modalVisible, closeModal }) => {
-	function showToast() {
-		ToastAndroid.show('تم إضافة المنتج في طلباتك', ToastAndroid.SHORT);
+	// const { addToCart, cartItems, isExist } = useContext(CartContext);
+	function showToast(msg) {
+		ToastAndroid.show(msg, ToastAndroid.SHORT);
 	}
+	const handleAddToCart = () => {
+		addMealToCart(selectedMeal).then((x) => {
+			closeModal();
+			showToast('تم إضافة المنتج في طلباتك');
+		});
+	};
 
 	return (
 		<Modal visible={modalVisible} animationType='fade' transparent={true}>
@@ -38,7 +46,7 @@ const MealModal = ({ selectedMeal, modalVisible, closeModal }) => {
 							{selectedMeal.name}
 						</Text>
 						<Text style={styles.modalDescription}>
-							{selectedMeal.desc || 'here is description text'}
+							{selectedMeal.disc}
 						</Text>
 						<View style={{ alignItems: 'center' }}>
 							<Text style={styles.modalPrice}>
@@ -49,10 +57,7 @@ const MealModal = ({ selectedMeal, modalVisible, closeModal }) => {
 							title='Add To Cart'
 							activeOpacity={0.8}
 							style={[styles.customBtn, styles.addBtn]}
-							onPress={() => {
-								closeModal();
-								showToast();
-							}}
+							onPress={handleAddToCart}
 						>
 							<Text
 								style={{

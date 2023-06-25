@@ -1,11 +1,12 @@
-import { Stack } from "expo-router";
-import { I18nManager } from "react-native";
+import { Stack } from 'expo-router';
+import { I18nManager } from 'react-native';
 
 const Layout = () => {
-  // Set the RTL direction
-  I18nManager.forceRTL(true);
+	// Set the RTL direction
+	I18nManager.forceRTL(true);
 
-  return (
+	return (
+		
 		<Stack>
 			<Stack.Screen
 				name='(tabs)'
@@ -14,7 +15,7 @@ const Layout = () => {
 				}}
 			/>
 		</Stack>
-  );
+	);
 };
 
 export default Layout;

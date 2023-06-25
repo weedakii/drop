@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { useContext, useEffect, useRef, useState } from 'react';
 import {
 	View,
 	Image,
@@ -11,10 +12,14 @@ import {
 	Animated,
 } from 'react-native';
 import { useKeyboard } from 'react-native-hooks';
+import { CartContext } from '../../context';
+import { FontAwesome } from '@expo/vector-icons';
 
-const CheckoutModal = ({ selectedMeal, modalVisible, closeModal }) => {
-	function showToast() {
-		ToastAndroid.show('تم ارسال طلبك الى المطعم', ToastAndroid.SHORT);
+const CheckoutModal = ({ modalVisible, closeModal }) => {
+	const { meals, setMeals, checkoutInfo } = useContext(CartContext);
+
+	function showToast(msg) {
+		ToastAndroid.show(msg, ToastAndroid.SHORT);
 	}
 	const keyboard = useKeyboard();
 	const imgScaleY = useRef(new Animated.Value(0)).current;
@@ -40,75 +45,94 @@ const CheckoutModal = ({ selectedMeal, modalVisible, closeModal }) => {
 
 	const handleFormSubmit = () => {
 		// Handle form submission here
-		console.log('Full Name:', fullName);
-		console.log('Address:', address);
-		console.log('Phone:', phone);
+		if (!fullName) {
+			showToast('يجب ادخال الاسم');
+			return;
+		} else if (!phone) {
+			showToast('يجب ادخال الهاتف');
+			return;
+		} else if (!address) {
+			showToast('يجب ادخال العنوان');
+			return;
+		}
+		axios
+			.post('https://back.amadagency.net/api/v1/order', {
+				products: meals,
+				username: fullName,
+				address,
+				phone,
+				totalPrice: checkoutInfo,
+			})
+			.then(() => {
+				closeModal();
+				showToast("تم ارسال طلبكم بنجاح ✔")
+				setMeals([])
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
 	return (
 		<Modal visible={modalVisible} animationType='fade' transparent={true}>
 			<View style={styles.modalContainer}>
-				{selectedMeal && (
-					<View style={styles.modalBlock}>
-						<View className='flex-1 justify-center p-2'>
-							<Animated.View
+				<View style={styles.modalBlock}>
+					<TouchableOpacity activeOpacity={.6} onPress={closeModal}  className="absolute top-3 left-4 "><FontAwesome name="close" size={50} color='white' /></TouchableOpacity>
+					<View className='flex-1 justify-center p-2'>
+						<Animated.View
+							style={{
+								transform: [{ translateY: imgScaleY }],
+								height: 200,
+							}}
+						>
+							<Image
+								source={require('../../assets/logo.png')}
 								style={{
-									transform: [{ translateY: imgScaleY }],
-									height: 200
+									height: '100%',
+									alignSelf: 'center',
 								}}
-							>
-								<Image
-									source={require('../../assets/logo.png')}
-									style={{
-										height: '100%',
-										alignSelf: 'center',
-									}}
-									resizeMode='contain'
-								/>
-							</Animated.View>
-							<Text className='justify-center py-4 text-5xl font-bold text-white text-center'>
-								البيانات
+								resizeMode='contain'
+							/>
+						</Animated.View>
+						<Text className='justify-center py-4 text-5xl font-bold text-white text-center'>
+							البيانات
+						</Text>
+						<TextInput
+							cursorColor='#edaa4b'
+							placeholderTextColor='#edaa4b'
+							className='h-10 border bg-white shadow-xl border-gray-300 text-right rounded mb-4 p-2'
+							placeholder='الاسم بالكامل'
+							value={fullName}
+							onChangeText={(text) => setFullName(text)}
+						/>
+						<TextInput
+							cursorColor='#edaa4b'
+							placeholderTextColor='#edaa4b'
+							className='h-10 border bg-white border-gray-300 text-right rounded mb-4 p-2'
+							placeholder='الهاتف'
+							keyboardType='phone-pad'
+							value={phone}
+							onChangeText={(text) => setPhone(text)}
+						/>
+						<TextInput
+							cursorColor='#edaa4b'
+							placeholderTextColor='#edaa4b'
+							className='h-10 border bg-white border-gray-300 text-right rounded mb-4 p-2'
+							placeholder='العنوان'
+							value={address}
+							onChangeText={(text) => setAddress(text)}
+						/>
+						<TouchableOpacity
+							activeOpacity={0.8}
+							className='w-full bg-gray-100 rounded-md py-2'
+							onPress={handleFormSubmit}
+						>
+							<Text className='text-center font-extrabold text-xl text-[#edaa4b]'>
+								إرسال
 							</Text>
-							<TextInput
-								cursorColor='#edaa4b'
-								placeholderTextColor='#edaa4b'
-								className='h-10 border bg-white shadow-xl border-gray-300 text-right rounded mb-4 p-2'
-								placeholder='الاسم بالكامل'
-								value={fullName}
-								onChangeText={(text) => setFullName(text)}
-							/>
-
-							<TextInput
-								cursorColor='#edaa4b'
-								placeholderTextColor='#edaa4b'
-								className='h-10 border bg-white border-gray-300 text-right rounded mb-4 p-2'
-								placeholder='العنوان'
-								value={address}
-								onChangeText={(text) => setAddress(text)}
-							/>
-
-							<TextInput
-								cursorColor='#edaa4b'
-								placeholderTextColor='#edaa4b'
-								className='h-10 border bg-white border-gray-300 text-right rounded mb-4 p-2'
-								placeholder='الهاتف'
-								keyboardType='phone-pad'
-								value={phone}
-								onChangeText={(text) => setPhone(text)}
-							/>
-
-							<TouchableOpacity
-								activeOpacity={0.8}
-								className='w-full bg-gray-100 rounded-md py-2'
-								onPress={handleFormSubmit}
-							>
-								<Text className='text-center font-extrabold text-xl text-[#edaa4b]'>
-									إرسال
-								</Text>
-							</TouchableOpacity>
-						</View>
+						</TouchableOpacity>
 					</View>
-				)}
+				</View>
 			</View>
 		</Modal>
 	);
