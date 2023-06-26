@@ -17,6 +17,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -29,11 +32,12 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.hatemhos11.Drop"
+      "package": "com.amad.Drop",
+      "versionCode": 1
     },
     "extra": {
       "eas": {
-        "projectId": "290978e9-1862-4dc4-9b4c-bfa0698970e1"
+        "projectId": "651362a2-922b-4fd3-8c3a-222c96c6e464"
       }
     }
   }

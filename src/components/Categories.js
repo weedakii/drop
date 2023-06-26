@@ -67,7 +67,8 @@ const Categories = ({ categories, setcategories, setmeals, meals }) => {
         >
           {c?.image && (
             <Image
-              className="w-10 h-10 rounded-full bg-slate-50 mr-3 scale-110"
+              style={styles.image}
+              // className="w-10 h-10 rounded-full bg-slate-50 mr-3 scale-110"
               source={{ uri: `https://back.amadagency.net/storage/${c.image}` }}
             />
           )}
@@ -115,6 +116,14 @@ const styles = StyleSheet.create({
   },
   activeButtonText: {
     color: "white", // Customize the active button text color
+  },
+  image: {
+    width: 40,
+    height: 40,
+    backgroundColor: "#f6f6f6",
+    marginRight: 15,
+    borderRadius: 100,
+    transform: [{ scale: 1.1 }],
   },
 });
 
